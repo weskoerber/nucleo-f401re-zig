@@ -1,0 +1,111 @@
+pub const Gpio = packed struct {
+    pub const A: *volatile Gpio = @ptrFromInt(0x4002_0000);
+    pub const B: *volatile Gpio = @ptrFromInt(0x4002_0400);
+    pub const C: *volatile Gpio = @ptrFromInt(0x4002_0800);
+    pub const D: *volatile Gpio = @ptrFromInt(0x4002_0C00);
+    pub const E: *volatile Gpio = @ptrFromInt(0x4002_1000);
+    pub const H: *volatile Gpio = @ptrFromInt(0x4002_1C00);
+
+    const OutputMode = enum(u2) {
+        input,
+        output,
+        alternate,
+        analog,
+    };
+
+    mode: packed union {
+        raw: u32,
+        pins: packed struct {
+            pin0: OutputMode,
+            pin1: OutputMode,
+            pin2: OutputMode,
+            pin3: OutputMode,
+            pin4: OutputMode,
+            pin5: OutputMode,
+            pin6: OutputMode,
+            pin7: OutputMode,
+            pin8: OutputMode,
+            pin9: OutputMode,
+            pin10: OutputMode,
+            pin11: OutputMode,
+            pin12: OutputMode,
+            pin13: OutputMode,
+            pin14: OutputMode,
+            pin15: OutputMode,
+        },
+    },
+    otype: u32,
+    ospeed: u32,
+    pupd: u32,
+    idr: u32,
+    odr: packed union {
+        raw: u32,
+        pins: packed struct {
+            pin0: bool,
+            pin1: bool,
+            pin2: bool,
+            pin3: bool,
+            pin4: bool,
+            pin5: bool,
+            pin6: bool,
+            pin7: bool,
+            pin8: bool,
+            pin9: bool,
+            pin10: bool,
+            pin11: bool,
+            pin12: bool,
+            pin13: bool,
+            pin14: bool,
+            pin15: bool,
+            _reserved: u16,
+        },
+    },
+    bsr: u32,
+    lck: u32,
+    afl: u32,
+    afh: u32,
+};
+
+pub const Rcc: *volatile packed struct {
+    ctl: u32,
+    pllcfg: u32,
+    cfg: u32,
+    int: u32,
+    ahb1rst: u32,
+    ahb2rst: u32,
+    _reserved: u32,
+    _reserved1: u32,
+    apb1rst: u32,
+    apb2rst: u32,
+    _reserved2: u32,
+    _reserved3: u32,
+    ahb1en: packed union {
+        raw: u32,
+        periph: packed struct {
+            gpioa: bool,
+            gpiob: bool,
+            gpioc: bool,
+            gpiod: bool,
+            gpioe: bool,
+            _reserved: u2,
+            gpioh: bool,
+            _reserved1: u4,
+            crc: bool,
+            _reserved2: u8,
+            dma1: u8,
+            dma2: u8,
+            _reserved3: u9,
+        },
+    },
+    ahb2en: u32,
+    apb1en: u32,
+    apb2en: u32,
+    ahb1lpen: u32,
+    ahb2lpen: u32,
+    apb1lpen: u32,
+    apb2lpen: u32,
+    bdc: u32,
+    sscg: u32,
+    plli2scfg: u32,
+    dckcfg: u32,
+} = @ptrFromInt(0x4002_3800);
